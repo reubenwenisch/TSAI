@@ -1,6 +1,6 @@
 # TSAI
 
-## The Dataset Class
+## The Dataset
 Here MyDataset consists of using <br>
 #### Inputs and Data Representation <br>
 * Images from the MNIST dataset
@@ -8,14 +8,20 @@ Here MyDataset consists of using <br>
 #### Targets and Data Representation<br>
 * the "number" that was represented by the MNIST image
 * The "sum" of the MNIST number with the random number (not one hot encoded)
-#### Datset Methods used
+#### Datset Methods used 
+##### Data generation strategy
 The random number is generated using torch.randint and limited to 10 numbers.
 Inheriting from the torchvision.datasets.MNIST to use existing methods to load, download MNIST data to the system.
+
+### Combining the inputs
+The MNIST model has conv and classification fc blocks. The output of this is combined with the one hot encoded random number
+using concatenate method. Post this there is a small fc network to generate the sum output.
 
 ## The Deep Learning model
 * Here for the MNIST we have a conv block and a classifier block
 * Next the output of this MNIST is taken along with the random number into the mix block to generate the sum output.
 
+```
 MyModule(
   (conv): Sequential(
     (0): Conv2d(1, 64, kernel_size=(5, 5), stride=(1, 1))
@@ -41,6 +47,7 @@ MyModule(
     (2): Linear(in_features=50, out_features=20, bias=True)
   )
 )
+```
 
 ## Loss Functions:
 2 Loss functions used seperately because these are 2 seperate outputs.
@@ -52,6 +59,7 @@ Test Accuracy of the MNIST: 0.99 %
 Test Accuracy of the random number: 0.98 %
 
 ## Training Logs
+```
 epoch: 0 train loss: 5.3513 mnist_accuracy: 0.11 rand_acc: 0.08
 epoch: 0 train loss: 2.9840 mnist_accuracy: 0.91 rand_acc: 0.11
 epoch: 0 train loss: 2.7382 mnist_accuracy: 0.94 rand_acc: 0.12
@@ -82,3 +90,4 @@ epoch: 4 train loss: 0.1652 mnist_accuracy: 0.99 rand_acc: 0.99
 epoch: 4 train loss: 0.1558 mnist_accuracy: 0.99 rand_acc: 0.99
 epoch: 4 train loss: 0.1481 mnist_accuracy: 0.99 rand_acc: 0.99
 Loss: 0.001122798312648471.
+```
